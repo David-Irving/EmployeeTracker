@@ -1,31 +1,29 @@
-drop database if exists employeetracker;
-create database employeetracker;
-use employeetracker;
+DROP DATABASE IF EXISTS employee_db;
+CREATE DATABASE employee_db;
+USE employee_db; 
 
-drop table if exists department;
-drop table if exists employee;
-drop table if exists roles;
-
-create table department (
-    id int primary key auto_increment,
-    name varchar(30) not null
+CREATE TABLE department (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(30) NOT NULL
 );
 
-create table role (
-    id int primary key auto_increment,
-    title varchar(30) not null,
-    salary decimal not null,
-    department_id int,
-    constraint dptfk foreign key (department_id) references department(id) on delete set null
+CREATE TABLE roles (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(30) NOT NULL, 
+    salary DECIMAL NOT NULL,
+    department_id INTEGER, 
+    INDEX dep_ind (department_id),
+    CONSTRAINT fk_department FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE SET NULL
 );
 
-create table employee (
-    id int primary key auto_increment,
-    first_name varchar(30) not null,
-    last_name varchar(30) not null,
-    role_id int,
-    constraint roleID foreign key (role_id) references roles(id) on delete set null,
-    manager_id int,
-    constraint manager foreign key (manager_id) references employee(id) on delete set null
+CREATE TABLE employee (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    roles_id INTEGER, 
+    INDEX roles_ind (roles_id),
+    CONSTRAINT fk_role FOREIGN KEY (roles_id) REFERENCES roles(id) ON DELETE SET NULL,
+    manager_id INTEGER,
+    INDEX manager_ind (manager_id),
+    CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );
-
